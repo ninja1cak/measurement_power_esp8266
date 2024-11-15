@@ -1,0 +1,12 @@
+https://thesolaruniverse.wordpress.com/2021/05/02/wiring-an-ili9341-spi-tft-display-with-esp8266-based-microcontroller-boards-nodemcu-and-wemos-d1-mini/
+
+
+PIN_NAME	PIN	COLOR_CABLE
+VCC		3V	BROWN
+GND		GND	RED
+CS		D2	ORANGE
+RESET		D3	YELLOW
+DC		D4	GREEN
+SDI		D7	BLUE
+SCK		D5	PURPLE
+LED		3V	BLACK
