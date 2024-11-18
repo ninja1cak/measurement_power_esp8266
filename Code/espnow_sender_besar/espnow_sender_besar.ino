@@ -20,7 +20,7 @@ uint8_t broadcastAddress[] = {0x8C, 0xCE, 0x4E, 0xCA, 0x5C, 0x77};
 // Structure example to send data
 // Must match the receiver structure
 typedef struct struct_message {
-  char name[32];
+  int id;
   float voltage;
   float current;
   float power;
@@ -68,7 +68,11 @@ void setup() {
   // Register peer
   esp_now_add_peer(broadcastAddress, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
 }
- 
+
+bool isNumber(float number){
+  return number == number ? true : false;
+}
+
 void loop() {
   float voltage = pzem.voltage();
   float current = pzem.current();
@@ -78,13 +82,13 @@ void loop() {
   float powerFactor = pzem.pf();
   if ((millis() - lastTime) > timerDelay) {
     // Set values to send
-    strcpy(dataSensor.name, "lamp");
-    dataSensor.voltage = voltage;
-    dataSensor.current = current;
-    dataSensor.power = power;
-    dataSensor.energy = energy;
-    dataSensor.frequency = frequency;
-    dataSensor.powerFactor = powerFactor;
+    dataSensor.id = 1;
+    dataSensor.voltage = isNumber(voltage) ? voltage : 0.0;
+    dataSensor.current = isNumber(current) ? current : 0.0;
+    dataSensor.power = isNumber(power) ?  power : 0.0;
+    dataSensor.energy = isNumber(energy) ? energy : 0.0;
+    dataSensor.frequency = isNumber(frequency) ? frequency : 0.0;
+    dataSensor.powerFactor = isNumber(powerFactor) ? powerFactor : 0.0;
     // Send message via ESP-NOW
 
     Serial.print("Voltage: ");      Serial.print(voltage);      Serial.println("V");
