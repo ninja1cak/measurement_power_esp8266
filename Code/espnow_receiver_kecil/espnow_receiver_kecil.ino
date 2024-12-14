@@ -32,18 +32,28 @@ void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len) {
 
   tft.setCursor(0, 0);
 
+  struct_message* checkData = &dataSensor;
 
-  printMeasurementTextOnLCD(0, 0, 105);
-  printValueMeasurementOnLCD(25, 0, &dataSensor);
+  if(checkData->id == 1){
+    printMeasurementTextOnLCD(0, 0, 105);
+    printValueMeasurementOnLCD(25, 0, &dataSensor);
+  }
+  
+  if(checkData->id == 2){
+    printMeasurementTextOnLCD(155, 0, 260);
+    printValueMeasurementOnLCD(180, 0, &dataSensor);
+  }
 
-  printMeasurementTextOnLCD(155, 0, 260);
-  printValueMeasurementOnLCD(180, 0, &dataSensor);
+  if(checkData->id == 3){
+    printMeasurementTextOnLCD(0, 120, 105);
+    printValueMeasurementOnLCD(25, 120, &dataSensor);
+  }
 
-  printMeasurementTextOnLCD(0, 120, 105);
-  printValueMeasurementOnLCD(25, 120, &dataSensor);
-
-  printMeasurementTextOnLCD(155, 120, 260);
-  printValueMeasurementOnLCD(180, 120, &dataSensor);
+  if(checkData->id == 4){
+    printMeasurementTextOnLCD(155, 120, 260);
+    printValueMeasurementOnLCD(180, 120, &dataSensor);
+  }
+  
 } 
 
 void setup() {
@@ -64,6 +74,14 @@ void setup() {
   
   // Once ESPNow is successfully Init, we will register for recv CB to
   // get recv packer info
+
+  printMeasurementTextOnLCD(0, 0, 105);  
+  printMeasurementTextOnLCD(155, 0, 260);
+  printMeasurementTextOnLCD(0, 120, 105);
+  printMeasurementTextOnLCD(155, 120, 260);
+
+
+
   esp_now_set_self_role(ESP_NOW_ROLE_SLAVE);
   esp_now_register_recv_cb(OnDataRecv);
 }
