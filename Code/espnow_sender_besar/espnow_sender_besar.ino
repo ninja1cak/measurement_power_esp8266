@@ -15,7 +15,7 @@ PZEM004Tv30 pzem(pzemSWSerial);
 #include <espnow.h>
 
 // REPLACE WITH RECEIVER MAC Address
-uint8_t broadcastAddress[] = {0x8C, 0xCE, 0x4E, 0xCA, 0x5C, 0x77};
+uint8_t broadcastAddress[] = {0xD8, 0xBF, 0xC0, 0xED, 0x76, 0x86};
 
 // Structure example to send data
 // Must match the receiver structure
@@ -82,7 +82,7 @@ void loop() {
   float powerFactor = pzem.pf();
   if ((millis() - lastTime) > timerDelay) {
     // Set values to send
-    dataSensor.id = 1;
+    dataSensor.id = 3;
     dataSensor.voltage = isNumber(voltage) ? voltage : 0.0;
     dataSensor.current = isNumber(current) ? current : 0.0;
     dataSensor.power = isNumber(power) ?  power : 0.0;

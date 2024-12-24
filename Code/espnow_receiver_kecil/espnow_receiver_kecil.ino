@@ -98,25 +98,25 @@ void serialDebug(struct struct_message* dataSensor){
 }
 
 void printValueMeasurementOnLCD(int pointX, int pointY, struct struct_message* dataSensor){
-  tft.setCursor(pointX,pointY);
+  tft.setCursor(pointX+50,pointY);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.println(dataSensor->voltage );
+  tft.println(dataSensor->id);
   tft.setCursor(pointX,pointY+20);
-  tft.println(dataSensor->current);
+  tft.println(dataSensor->voltage);
   tft.setCursor(pointX,pointY+40);
-  tft.println(dataSensor->power);
+  tft.println(dataSensor->current);
   tft.setCursor(pointX,pointY+60);
-  tft.println(dataSensor->energy);
+  tft.println(dataSensor->power);
   tft.setCursor(pointX,pointY+80);
-  tft.println(dataSensor->frequency);
+  tft.println(dataSensor->energy);
 }
 
 void printMeasurementTextOnLCD(int pointX, int pointY, int pointMetricX){
-  measurementText(TFT_WHITE, 2, "V: ", "V", pointX, pointY, pointMetricX);
-  measurementText(TFT_WHITE, 2, "I: ", "A", pointX, pointY+20, pointMetricX);
-  measurementText(TFT_WHITE, 2, "P: ", "W", pointX, pointY+40, pointMetricX);
-  measurementText(TFT_WHITE, 2, "E: ", "kWh",pointX, pointY+60, pointMetricX);
-  measurementText(TFT_WHITE, 2, "F: ", "Hz",pointX, pointY+80, pointMetricX);
+  measurementText(TFT_WHITE, 2, "Sensor ", "", pointX, pointY, pointMetricX);
+  measurementText(TFT_WHITE, 2, "V: ", "V", pointX, pointY+20, pointMetricX);
+  measurementText(TFT_WHITE, 2, "I: ", "A", pointX, pointY+40, pointMetricX);
+  measurementText(TFT_WHITE, 2, "P: ", "W",pointX, pointY+60, pointMetricX);
+  measurementText(TFT_WHITE, 2, "E: ", "kWh",pointX, pointY+80, pointMetricX);
 }
 
 void measurementText(int textColor, int textSize, String text, String metric,int pointX, int pointY, int pointMetricX){
@@ -131,9 +131,7 @@ void measurementText(int textColor, int textSize, String text, String metric,int
 
 void loop() {
 
-
   // tft.setTextColor(ILI9341_WHITE);  tft.setTextSize(2);
   // tft.println("V : ");
-
 
 }
