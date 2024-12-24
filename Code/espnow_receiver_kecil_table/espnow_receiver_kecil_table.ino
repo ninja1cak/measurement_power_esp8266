@@ -23,25 +23,25 @@ typedef struct struct_message {
 struct_message dataSensor;
 
 const int tableRows = 6;
-const int tableCols = 5;
+const int tableCols = 4;
 int cellWidth;
-const int defaultCellWidth = 60;
+int voltageWidth = 30;
+const int defaultCellWidth = 75;
 const int cellHeight = 30;
 const int startX = 0;
 const int startY = 10;
 
-float datas = 180.00;
-String dummyData[6][5] = {
-  {"S", "V", "I", "P", "E"},
-  {"1", String(datas), "0.00", "0.00", "0.00"},
-  {"2", "0.00", "0.00", "0.00", "0.00"},
-  {"3", "0.00", "0.00", "0.00", "0.00"},
-  {"4", "0.00", "0.00", "0.00", "0.00"},
-  {"5", "0.00", "0.00", "0.00", "0.00"},
+String dummyData[tableRows][tableCols] = {
+  {"S", "V", "I", "P"},
+  {"1", "0.000", "0.000", "0.000"},
+  {"2", "0.000", "0.000", "0.000"},
+  {"3", "0.000", "0.000", "0.000"},
+  {"4", "0.000", "0.000", "0.000"},
+  {"5", "0.000", "0.000", "0.000"},
 };
 
-String data[6][5];
-String TABLE_HEADER[5] = {"S", "V", "I", "P", "E"};
+String data[tableRows][tableCols];
+String TABLE_HEADER[tableCols] = {"S", "V (V)", "I (A)", "P (W)"};
 
 // Callback function that will be executed when data is received
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len) {
@@ -119,28 +119,9 @@ void serialDebug(struct struct_message* dataSensor){
 
 void saveValueOnArray(struct struct_message* dataSensor){
   data[dataSensor->id][0] = String(dataSensor->id);
-  data[dataSensor->id][1] = String(dataSensor->voltage);
-  data[dataSensor->id][2] = String(dataSensor->current);
-  data[dataSensor->id][3] = String(dataSensor->power);
-  data[dataSensor->id][4] = String(dataSensor->energy);
-}
-
-void printMeasurementTextOnLCD(int pointX, int pointY, int pointMetricX){
-  measurementText(TFT_WHITE, 2, "Sensor ", "", pointX, pointY, pointMetricX);
-  measurementText(TFT_WHITE, 2, "V: ", "V", pointX, pointY+20, pointMetricX);
-  measurementText(TFT_WHITE, 2, "I: ", "A", pointX, pointY+40, pointMetricX);
-  measurementText(TFT_WHITE, 2, "P: ", "W",pointX, pointY+60, pointMetricX);
-  measurementText(TFT_WHITE, 2, "E: ", "kWh",pointX, pointY+80, pointMetricX);
-}
-
-void measurementText(int textColor, int textSize, String text, String metric,int pointX, int pointY, int pointMetricX){
-  tft.setCursor(pointX, pointY);
-  tft.setTextColor(textColor, TFT_BLACK);  
-  tft.setTextSize(textSize);
-  tft.println(text);
-  
-  tft.setCursor(pointMetricX, pointY);
-  tft.println(metric);
+  data[dataSensor->id][1] = String(dataSensor->voltage, 3);
+  data[dataSensor->id][2] = String(dataSensor->current, 3);
+  data[dataSensor->id][3] = String(dataSensor->current*dataSensor->voltage, 3);
 }
 
 void loop() {
@@ -149,7 +130,7 @@ void loop() {
 
 }
 
-void drawTable(String data[6][5]) {
+void drawTable(String data[tableRows][tableCols]) {
   // Draw the table grid
   for (int row = 0; row <= tableRows; row++) {
     int y = startY + row * cellHeight;
@@ -159,7 +140,7 @@ void drawTable(String data[6][5]) {
   for (int col = 0; col <= tableCols; col++) {
     Serial.println("test");
 
-    cellWidth = col == 1 ? 30 : defaultCellWidth;
+    cellWidth = col == 1 ? voltageWidth : defaultCellWidth;
    
     Serial.println(cellWidth);
     int x = startX + col * cellWidth;
@@ -170,7 +151,7 @@ void drawTable(String data[6][5]) {
   for (int row = 0; row < tableRows; row++) {
     for (int col = 0; col < tableCols; col++) {
       String text = "R" + String(row + 1) + "C" + String(col + 1); // Example text
-      cellWidth = col == 1  ? 30 : defaultCellWidth; 
+      cellWidth = col == 1  ? voltageWidth : defaultCellWidth; 
       int textX = startX + col * cellWidth + 5; // Add some padding
       int textY = startY + row * cellHeight + 5; // Add some padding
       tft.setTextColor(TFT_WHITE, TFT_BLACK);
